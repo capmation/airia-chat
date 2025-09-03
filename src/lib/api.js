@@ -4,8 +4,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 if (!BASE_URL) {
   console.warn(
-    "[api] VITE_API_BASE_URL no está definida. " +
-    "Revise su .env(.development), el prefijo VITE_, y reinicie npm run dev."
+    "[api] VITE_API_BASE_URL is not defined "
   );
 }
 
