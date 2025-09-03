@@ -3,8 +3,10 @@ import Chat from "./Chat";
 
 function App() {
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-50">
-      <Chat />
+    <div className="h-screen items-center justify-center bg-amber-50">      
+      <div className="h-7/8 flex items-center justify-center">      
+        <Chat />
+      </div>
     </div>
 
   )

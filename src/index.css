@@ -1,1 +1,84 @@
 @import "tailwindcss";
+
+/* 1) Brand values (use OKLCH/HSL for better consistency) */
+:root {
+  /* Brand palette (light) */
+  --brand-primary: oklch(0.63 0.17 260); /* corporate purple */
+  --brand-primary-600: oklch(0.58 0.17 260);
+  --brand-secondary: oklch(0.82 0.07 220);
+  --brand-accent: oklch(0.78 0.16 85);
+
+  /* Neutrals / surfaces */
+  --brand-bg: oklch(0.985 0 0);        /* background */
+  --brand-fg: oklch(0.21 0.02 250);    /* primary text */
+
+  /* Typography (load your @font-face in this file or another CSS) */
+  /* @font-face { font-family: "Inter"; src: url(/fonts/inter.woff2) format("woff2"); font-display: swap; } */
+
+  /* Base typography tokens */
+  --brand-font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Default radii and shadows */
+  --brand-radius-sm: 6px;
+  --brand-radius-md: 10px;
+  --brand-radius-lg: 14px;
+
+  --brand-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.08);
+  --brand-shadow-md: 0 6px 16px -4px rgb(0 0 0 / 0.12);
+
+  /* Breakpoints (use rem to avoid odd ordering issues) */
+  --brand-bp-xs: 30rem;   /* 480px */
+  --brand-bp-3xl: 120rem; /* 1920px */
+}
+
+/* Dark theme (toggle by adding .dark on <html> or <body>) */
+.dark {
+  --brand-bg: oklch(0.15 0.02 250);
+  --brand-fg: oklch(0.95 0.01 250);
+  --brand-primary: oklch(0.72 0.17 260);
+}
+
+/* 2) Map brand values to Tailwind via @theme (generates utilities) */
+@theme inline {
+  /* Colors: create bg-primary, text-primary, etc. */
+  --color-primary: var(--brand-primary);
+  --color-primary-600: var(--brand-primary-600);
+  --color-secondary: var(--brand-secondary);
+  --color-accent: var(--brand-accent);
+
+  --color-background: var(--brand-bg);
+  --color-foreground: var(--brand-fg);
+
+  /* Typeface: wires .font-sans to your family */
+  --font-sans: var(--brand-font-sans);
+
+  /* Radii: consistent rounded corners across UI */
+  --radius-sm: var(--brand-radius-sm);
+  --radius-md: var(--brand-radius-md);
+  --radius-lg: var(--brand-radius-lg);
+
+  /* Shadows: shadow-sm, shadow-md, etc. */
+  --shadow-sm: var(--brand-shadow-sm);
+  --shadow-md: var(--brand-shadow-md);
+
+  /* Extra breakpoints and containers */
+  --breakpoint-xs: var(--brand-bp-xs);
+  --breakpoint-3xl: var(--brand-bp-3xl);
+  /* Example extra container size:
+     --container-8xl: 96rem; */
+}
+
+/* 3) (Optional) Thin component classes that respect utilities */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           font-medium rounded-md px-4 py-2
+           bg-primary text-white hover:bg-primary-600
+           shadow-md;
+  }
+
+  .card {
+    @apply rounded-lg bg-background text-foreground shadow-sm p-6;
+  }
+}
+
