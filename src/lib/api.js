@@ -1,6 +1,17 @@
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+if (!BASE_URL) {
+  console.warn(
+    "[api] VITE_API_BASE_URL no está definida. " +
+    "Revise su .env(.development), el prefijo VITE_, y reinicie npm run dev."
+  );
+}
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, 
+  baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
+
+console.log("[api] baseURL =", api.defaults.baseURL);
