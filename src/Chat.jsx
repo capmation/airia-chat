@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { api } from "./lib/api";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
@@ -14,7 +14,7 @@ export default function Chat() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8787/api/agent/chat", {
+      const res = await api.post("/api/agent/chat", {
         text: userMsg.content,
       });
       const assistantMsg = { role: "assistant", content: res.data.result };
