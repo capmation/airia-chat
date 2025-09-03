@@ -17,7 +17,6 @@ export default function Chat() {
       const res = await axios.post("http://localhost:8787/api/agent/chat", {
         text: userMsg.content,
       });
-      console.log({res})
       const assistantMsg = { role: "assistant", content: res.data.result };
       setMessages((prev) => [...prev, assistantMsg]);
     } catch (err) {
@@ -32,7 +31,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col max-w-md mx-auto p-4 border rounded-lg shadow h-screen">
+    <div className="flex flex-col w-[90%] mx-auto p-4 border rounded-lg shadow h-[90%] m-2">
       <div className="flex-1 overflow-y-auto space-y-2">
         {messages.map((m, i) => (
           <div
