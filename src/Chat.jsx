@@ -134,10 +134,10 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col w-[90%] max-w-[800px] mx-auto bg-white rounded-lg shadow h-[100%] py-4 mt-16">
+    <div className="flex flex-col w-full sm:w-[90%] max-w-[800px] mx-auto bg-white rounded-lg shadow h-[100%] sm:py-4 sm:mt-16">
       <div className="text-center p-4">
         <img
-          className="w-1/4 m-auto"
+          className="w-1/2 sm:w-1/4 m-auto"
           alt="Capmation logo"
           src="/capmation-agents-logo.png"
         />
@@ -145,7 +145,7 @@ export default function Chat() {
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pt-5">
         {messages.map((m, i) => (
-          <div key={i} className={`message-row 
+          <div key={i} className={`message-row w-[90%] sm:w-full
                   animate-fade-in-up will-change-transform motion-reduce:animate-none 
                   ${
                     m.role === "user"
@@ -191,7 +191,7 @@ export default function Chat() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="flex mt-2 gap-2 px-4">
+      <div className="flex mt-2 gap-2 px-4 pb-5 sm:pb-0">
         <input
           className="flex-1 border px-3 py-2 rounded border-primary"
           placeholder="Type a message..."
