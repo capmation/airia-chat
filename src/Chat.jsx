@@ -1,4 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks"; // single line breaks => <br/>
 import { api } from "./lib/api";
 
 /* Tries to parse strings that look like JSON; also parses nested JSON inside "Value" */
@@ -76,10 +79,20 @@ function extractAssistantMessages(data) {
 }
 
 export default function Chat() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { role: "assistant", 
+      content: `👋 **Welcome to Capmation Agents!** 
+      Ask me about your projects or teammates. I can **create new projects, enroll team members into your projects, and send emails**. 
+      What would you like to do today?` }
+  ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
+  const bottomRef = useRef(null);   
+
+  useLayoutEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages, loading]);
 
   async function sendMessage() {
     if (loading || !input.trim()) return;
@@ -110,11 +123,6 @@ export default function Chat() {
       ]);
     } finally {
       setLoading(false);
-      requestAnimationFrame(() => {
-        if (scrollRef.current) {
-          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-        }
-      });
     }
   }
 
@@ -126,32 +134,64 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col w-[90%] mx-auto bg-white rounded-lg shadow h-[100%] p-4 mt-16">
+    <div className="flex flex-col w-[90%] max-w-[800px] mx-auto bg-white rounded-lg shadow h-[100%] py-4 mt-16">
       <div className="text-center p-4">
         <img
           className="w-1/4 m-auto"
           alt="Capmation logo"
-          src="https://apps.capmation.com/img/ZCapmation_Theme.Capmation_Logo_Changing_Lives.jpg?YrsnXGDXqL5scmYSYM410g"
+          src="/capmation-agents-logo.png"
         />
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pt-5">
         {messages.map((m, i) => (
-          <div
-            key={i}
-            className={`p-2 rounded whitespace-pre-wrap ${
-              m.role === "user"
-                ? "bg-yellow-50 text-right"
-                : "bg-gray-100 text-left"
-            }`}
-          >
-            {m.content}
+          <div key={i} className={`message-row 
+                  animate-fade-in-up will-change-transform motion-reduce:animate-none 
+                  ${
+                    m.role === "user"
+                      ? "text-right me"
+                      : "text-left pl-4 ai"
+                  }`}>
+            <div className={`${
+                m.role === "user"
+                  ? ""
+                  : "flex"
+              }`}>
+
+              {m.role === "user"
+                ? <></>
+                : <img
+                    className="w-[40px] h-[40px] mr-3 -top-4.5 relative"
+                    alt="ia-icon"
+                    src="/capmation-ai-icon.png"
+                  />
+              }
+              
+              <div
+                key={i}
+                className={`message max-w-[90%] text-left p-2 rounded whitespace-pre-wrap ${
+                  m.role === "user"
+                    ? "bg-yellow-100"
+                    : "bg-gray-100"
+                }`}
+              >
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm, remarkBreaks]}                
+                >
+                  {m.content}
+                </ReactMarkdown>
+              </div>
+            </div>
           </div>
         ))}
-        {loading && <div className="text-sm text-gray-400">Thinking…</div>}
+        {loading && <div className="text-sm text-gray-400 flex justify-center items-center animate-fade-in-up will-change-transform motion-reduce:animate-none ">
+          <img src="/thinkingRobot.png" className="w-[60px] mr-2" />
+          Thinking…
+        </div>}
+        <div ref={bottomRef} />
       </div>
 
-      <div className="flex mt-2 gap-2">
+      <div className="flex mt-2 gap-2 px-4">
         <input
           className="flex-1 border px-3 py-2 rounded border-primary"
           placeholder="Type a message..."
@@ -164,7 +204,7 @@ export default function Chat() {
           className="btn-primary"
           disabled={loading || !input.trim()}
         >
-          Send
+          <img src="/send.svg" className="w-[20px]" />
         </button>
       </div>
     </div>

@@ -39,3 +39,47 @@
 .read-the-docs {
   color: #888;
 }
+
+.message {
+    width: auto;
+    display: inline-block;
+    padding: 15px 5px;
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
+    margin-bottom: 8px;
+    border-radius: 10px;
+    font-size: 15px;
+    position: relative;
+}
+
+.message:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.message-row.ai .message:after {
+    border-width: 0px 10px 10px 0;
+    border-color: transparent var(--color-gray-100) transparent transparent;
+    top: 0;
+    left: -10px;
+}
+
+.message-row.me .message:after {
+    border-width: 0px 0 10px 10px;
+    border-color: transparent transparent transparent var(--color-yellow-100);
+    top: 0;
+    right: -10px;
+}
+
+.message-row.me .message {
+    text-align: right;
+    border-top-right-radius: 0px;
+    right: 10px;
+}
+
+.message-row.ai .message {
+    border-top-left-radius: 0px;
+    left: 10px;
+}
