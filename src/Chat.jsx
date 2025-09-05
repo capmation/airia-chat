@@ -149,7 +149,7 @@ export default function Chat() {
                   animate-fade-in-up will-change-transform motion-reduce:animate-none 
                   ${
                     m.role === "user"
-                      ? "text-right me"
+                      ? "text-right pr-5 me"
                       : "text-left pl-4 ai"
                   }`}>
             <div className={`${
@@ -169,7 +169,7 @@ export default function Chat() {
               
               <div
                 key={i}
-                className={`message max-w-[90%] text-left p-2 rounded whitespace-pre-wrap ${
+                className={`message max-w-[90%] text-left p-4 rounded whitespace-pre-wrap ${
                   m.role === "user"
                     ? "bg-yellow-100"
                     : "bg-gray-100"
