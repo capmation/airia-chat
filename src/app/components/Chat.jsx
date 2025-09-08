@@ -2,7 +2,7 @@ import { useState, useRef, useLayoutEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks"; // single line breaks => <br/>
-import { api } from "./lib/api";
+import { api } from "../../utils/api";
 
 /* Tries to parse strings that look like JSON; also parses nested JSON inside "Value" */
 function parseMaybeJSON(value) {
@@ -197,6 +197,7 @@ export default function Chat() {
           placeholder="Type a message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          disabled={loading}
           onKeyDown={handleKeyDown}
         />
         <button

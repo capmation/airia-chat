@@ -75,6 +75,7 @@
 .message-row.me .message {
     border-top-right-radius: 0px;
     right: 10px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 .message-row.ai .message {
