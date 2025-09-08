@@ -1,12 +1,73 @@
-# React + Vite
+# AI Airia chat client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+A lightweight **React (Vite)** client for chatting with an AI Agent through a secure Node/Express proxy. The app includes a minimal login that stores a JWT in `localStorage` and attaches it to all subsequent API requests.
 
-Currently, two official plugins are available:
+## Features
+- Simple login → retrieves JWT from server and stores it locally
+- Authenticated requests to protected endpoints
+- Tailwind-friendly UI (optional)
+- Single configurable API base URL
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
+- Node 18+ and npm
+- The **Airia Server** (Node/Express) running locally or in the cloud
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# 1) Install dependencies
+npm install
+
+# 2) Create env file
+cp .env.example .env
+
+# 3) Run dev server
+npm run dev
+# Vite defaults to http://localhost:5173
+```
+
+### .env.example
+```env
+# Base URL of your Node/Express API (Airia proxy)
+VITE_API_BASE_URL=http://localhost:8787
+```
+
+## Environment Variables
+
+| Name                | Required | Example                 | Description |
+|---------------------|----------|-------------------------|-------------|
+| `VITE_API_BASE_URL` | Yes      | `http://localhost:8787` | Base URL for your API server. Used by the client to call `/api/auth/login` and `/api/agent/chat`. |
+
+> Tip: In your API client (Axios or fetch), read `import.meta.env.VITE_API_BASE_URL` to build requests.
+
+## Scripts
+
+| Command           | Description                     |
+|-------------------|---------------------------------|
+| `npm run dev`     | Start Vite dev server           |
+| `npm run build`   | Build production assets         |
+| `npm run preview` | Preview the production build    |
+
+## Auth Flow (Client)
+1. User submits username/password to `POST /api/auth/login`.
+2. Server returns a JWT → client saves it in `localStorage` as `token`.
+3. Client attaches `Authorization: Bearer <token>` on subsequent requests (e.g., `POST /api/agent/chat`).
+
+## Axios Setup (example)
+
+```ts
+// src/utils/api.ts
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  headers: { "Content-Type": "application/json" },
+});
+
+api.interceptors.request.use((config) => {
+  const t = localStorage.getItem("token");
+  if (t) config.headers.Authorization = `Bearer ${t}`;
+  return config;
+});
+```
