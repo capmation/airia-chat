@@ -82,7 +82,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([
     { role: "assistant", 
       content: `👋 **Welcome to Capmation Agents!** 
-      Ask me about your projects or teammates. I can **create new projects, enroll team members into your projects, and send emails**. 
+      Ask me about your projects or teammates. I can **create new projects, enroll team members into your projects, send emails and search the repository for best practice files**. 
       What would you like to do today?` }
   ]);
   const [input, setInput] = useState("");
