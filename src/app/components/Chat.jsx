@@ -196,7 +196,7 @@ export default function Chat() {
   }, []);
 
   return (
-    <div className="flex flex-col w-full sm:w-[90%] max-w-[800px] mx-auto bg-white rounded-lg shadow h-[100%] sm:py-4 sm:mt-16">
+    <div className="flex flex-col w-full sm:w-[90%] max-w-[800px] mx-auto bg-white rounded-lg shadow h-[100%] sm:py-4 sm:mt-2">
       <div className="text-center p-4">
         <img
           className="w-1/2 sm:w-1/4 m-auto"

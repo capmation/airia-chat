@@ -78,7 +78,6 @@ export function wireSocket(s, opts = {}) {
 
   const onConnect = () => {
     setWsStatus?.("connected");
-    joinRoom("global"); 
     pingServer();       
   };
   const onDisconnect = () => setWsStatus?.("disconnected");
