@@ -72,7 +72,7 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen items-center justify-center bg-amber-50">
+    <div className="h-screen items-center justify-center bg-amber-50 relative">
       <div className="h-screen sm:h-7/8 flex flex-col items-center justify-center">
         {authed ? (
           <div>
@@ -80,9 +80,8 @@ export default function App() {
               wsStatus={wsStatus}
               authed={authed}
               onLogout={handleLogout}
-              brand="Capmation Agents"
             />
-            <main className="pt-6 sm:pt-20 h-[100vh] sm:h-[calc(100vh-3.5rem)] flex items-center justify-center">
+            <main className="pt-0 sm:pt-8 h-[100vh] sm:h-[calc(100vh-3.5rem)] flex items-center justify-center">
               <Chat />
             </main>
           </div>
