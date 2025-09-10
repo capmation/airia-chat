@@ -1,10 +1,10 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks"; // single line breaks => <br/>
 import { api } from "../../utils/api";
+import { subscribe } from "../../utils/bus";
 
-/* Tries to parse strings that look like JSON; also parses nested JSON inside "Value" */
 function parseMaybeJSON(value) {
   if (typeof value !== "string") return value;
   try {
@@ -22,7 +22,6 @@ function parseMaybeJSON(value) {
   }
 }
 
-/* Summarize a single pipeline step into a displayable string */
 function summarizeStep(step) {
   const label = step?.stepType || "Step";
   const out = parseMaybeJSON(step?.output);
@@ -132,6 +131,69 @@ export default function Chat() {
       sendMessage();
     }
   }
+
+  useEffect(() => {
+    const unsubscribe = subscribe("team-member:created", (member) => {
+      const pretty =
+        `👤 Real time Notification!! - Admin add a new team member:\n` +
+        `• Name: ${member.name} ${member.lastname}\n` +
+        `• Email: ${member.email}\n` +
+        `• Position: ${member.position ?? "—"}\n` +
+        `• Allocated: ${member.allocated ? "Yes" : "No"}\n` +
+        `• ID: ${member.id}`;
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "system", content: pretty, payload: member },
+      ]);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe("project:created", (project) => {
+      const pretty =
+        `👤 Real time Notification!! - Admin add a new Project:\n` +
+        `• Name: ${project.name}\n` +
+        `• ID: ${project.id}`; 
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "system", content: pretty, payload: project },
+      ]);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe("project:deleted", (project) => {
+      const pretty =
+        `👤 Real time Notification!! - Admin delete the Project:\n` +
+        `• Name: ${project.name}\n` +
+        `• ID: ${project.id}`;
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "system", content: pretty, payload: project },
+      ]);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe("project:updated", (project) => {
+      const pretty =
+        `👤 Real time Notification!! - Admin add a update the Project:\n` +
+        `• Name: ${project.name}\n` +
+        `• ID: ${project.id}`;
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "system", content: pretty, payload: project },
+      ]);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <div className="flex flex-col w-full sm:w-[90%] max-w-[800px] mx-auto bg-white rounded-lg shadow h-[100%] sm:py-4 sm:mt-16">
